@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public enum HexType
 {
@@ -16,7 +17,7 @@ public enum HexType
 	Mountains
 }
 
-public class Hex : MonoBehaviour
+public class Hex : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField]
     private int x;
@@ -85,6 +86,10 @@ public class Hex : MonoBehaviour
 	[SerializeField]
 	private bool specialHex;
 	public bool SpecialHex { get { return specialHex; } set { specialHex = value; } }
+
+	[SerializeField]
+	protected bool visible = false;
+	public bool Visible { get { return visible; } set { visible = value; } }
 
 	[SerializeField]
 	private TMP_Text hexText;
@@ -168,6 +173,43 @@ public class Hex : MonoBehaviour
 			case HexType.Mountains:
 				terrainSprite.sortingOrder = baseOrder + 1; //Higher terrain
 				break;
+		}
+	}
+
+	private void ToggleFog(bool flag)
+	{
+		fogSprite.gameObject.SetActive(flag);
+	}
+
+	private void ToggleDark(bool flag)
+	{
+		darkSprite.gameObject.SetActive(flag);
+	}
+
+	public void DiscoverHex()
+	{
+		ToggleFog(false);
+		ToggleDark(false);
+		visible = true;
+	}
+
+	public void SeenHex()
+	{
+		ToggleFog(true);
+		ToggleDark(false);
+		visible = false;
+	}
+
+	public void OnPointerClick(PointerEventData eventData)
+	{
+		if (eventData.button == PointerEventData.InputButton.Right)
+		{
+			//Debug.Log($"Right Click-Hex:{x}, {y}");
+			if (gameMgr.CheckIfHexIsAdjacent(gameMgr.CurUnit.CurHex, this))
+			{
+				//Debug.Log("Adjacent-True");
+				gameMgr.CurUnit.PrepareMoveToHex(this);
+			}
 		}
 	}
 }

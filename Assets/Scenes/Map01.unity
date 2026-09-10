@@ -284,6 +284,7 @@ GameObject:
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
   - component: {fileID: 519420033}
+  - component: {fileID: 519420034}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -424,6 +425,22 @@ MonoBehaviour:
   moveSpeed: 10
   zoomSpeed: 5
   zoomModifier: 0
+--- !u!114 &519420034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56666c5a40171f54783dd416a44f42bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.Physics2DRaycaster
+  m_EventMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_MaxRayIntersections: 0
 --- !u!1 &527941502
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,6 +500,31 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3b77102e6f1a93d49a2964caea0e9f29, type: 2}
   - {fileID: 11400000, guid: 06cdef0cb900893478fbd9783fb01dcc, type: 2}
   - {fileID: 11400000, guid: e08400e940c7e954d9ad42d236b0f884, type: 2}
+  landUnitPrefab: {fileID: 6310119108563010371, guid: 9402b30005d349b43b75003d1373149b, type: 3}
+  navalUnitPrefab: {fileID: 6310119108563010371, guid: 123b35728889d8746ae1aa5c60e7b6ee, type: 3}
+  townPrefab: {fileID: 0}
+  curUnit: {fileID: 0}
+  curAiUnit: {fileID: 0}
+  landUnitData:
+  - {fileID: 11400000, guid: efc2f16a0ef236945b1918aa08b8dc4c, type: 2}
+  - {fileID: 11400000, guid: 7ab207dd637d1274484f809dd13612dd, type: 2}
+  - {fileID: 11400000, guid: a726cd2185a41814495224c09e2d7221, type: 2}
+  - {fileID: 11400000, guid: 5d44891e0968cd24aa739a21645f4939, type: 2}
+  - {fileID: 11400000, guid: 9f92e9fe33ee4df4a8638815e5da9c0d, type: 2}
+  - {fileID: 11400000, guid: 49a50e9d857aad64f9bf0e3de33c40d9, type: 2}
+  - {fileID: 11400000, guid: 2af248fce0d403747b3ec870d6adcc32, type: 2}
+  - {fileID: 11400000, guid: 86ff73827a556ea4f9f9e4b01df72575, type: 2}
+  - {fileID: 11400000, guid: a04b8389111a08648a7c6c1f8e97429b, type: 2}
+  - {fileID: 11400000, guid: 13ad60b66db7a304682d007dddb8ee99, type: 2}
+  - {fileID: 11400000, guid: 928cab8f76def8444bd953d7493ec2ff, type: 2}
+  - {fileID: 11400000, guid: f4df065248ccb6e4e8070949bf3a77ae, type: 2}
+  navalUnitData:
+  - {fileID: 11400000, guid: 4407392467c9e9048b519a9bf74dea68, type: 2}
+  - {fileID: 11400000, guid: 6bcc37a46e8dd8e4c886699f20c11cd5, type: 2}
+  - {fileID: 11400000, guid: 0fd84813dc03a114bb0a6c7c17099163, type: 2}
+  - {fileID: 11400000, guid: ae3b1db234434994386d26420cddb1af, type: 2}
+  - {fileID: 11400000, guid: 4a124d815e86c0a46bcf5b1396d273c2, type: 2}
+  - {fileID: 11400000, guid: 8e28beb803e41da4386b83f3e8c1ed34, type: 2}
 --- !u!4 &527941504
 Transform:
   m_ObjectHideFlags: 0
@@ -535,7 +577,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000b1b1ac408d6ad667eb043d3c
+  m_ApplyToSortingLayers: 00000000b1b1ac408d6ad667eb043d3ca53662ee
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
