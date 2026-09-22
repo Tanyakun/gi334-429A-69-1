@@ -9,20 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28e4447d3a396c04981e7a02415067c9, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c6e664f78db6cf4ea442f2a32ce0257, type: 3}
   m_Name: 01_Grassland
   m_EditorClassIdentifier: Assembly-CSharp::HexData
   hexName: Grassland
   type: 1
   terrainSprites:
-  - {fileID: 21300000, guid: 8a8dacd9ee5f6b848b27a5129f6f4238, type: 3}
-  - {fileID: 21300000, guid: a00eb4fdd0412a7479dd32a392bfab29, type: 3}
-  - {fileID: 21300000, guid: 8b1abd64669c6ac47a92c3bb04a026c2, type: 3}
-  - {fileID: 21300000, guid: 5a25225203fe60f419098ec25f4bd63e, type: 3}
+  - {fileID: 21300000, guid: 82da5ddd2fd0a144a9ef7c39b22ab023, type: 3}
+  - {fileID: 21300000, guid: 8c40f6718f2212744b1ef7d480efe531, type: 3}
+  - {fileID: 21300000, guid: 16297603a4211fe40a7cfeb61806efb5, type: 3}
+  - {fileID: 21300000, guid: 81e8acae0f598b94ca10d27eeb620c29, type: 3}
   forestSprites:
-  - {fileID: 21300000, guid: 9abe58259b12c274385553b94ca3b706, type: 3}
-  - {fileID: 21300000, guid: fad09dbc7076adf4db4b4ae1aff1139c, type: 3}
-  - {fileID: 21300000, guid: 4cf49ef0171fa014c93cd8ee9fa5b070, type: 3}
-  - {fileID: 21300000, guid: beeeac2b04c45d141930d1ecbab37f33, type: 3}
+  - {fileID: 21300000, guid: 9b8e9df5ef6a07d48a613c76c41850ae, type: 3}
+  - {fileID: 21300000, guid: 2f442c6de15f2b94a8da7cf9a57d26ae, type: 3}
+  - {fileID: 21300000, guid: b76e36b9e9c51fc449480118ac30e6c2, type: 3}
+  - {fileID: 21300000, guid: fdb729cbc5cf36049b0db645e8dc042e, type: 3}
   resourceYield: 
   moveCost: 1

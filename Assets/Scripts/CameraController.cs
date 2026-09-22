@@ -19,27 +19,27 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private float zoomModifier;
 
-	public static CameraController instance;
+    public static CameraController instance;
 
-	void Awake()
-	{
+    void Awake()
+    {
         instance = this;
         cam = Camera.main;
-	}
+    }
 
-	// Start is called once before the first execution of Update after the MonoBehaviour is created
-	void Start()
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
     {
         moveAction = InputSystem.actions.FindAction("Move");
         zoomAction = InputSystem.actions.FindAction("Zoom");
-	}
+    }
 
     // Update is called once per frame
     void Update()
     {
         MoveByKB();
         ZoomInOut();
-	}
+    }
 
     public void MoveByKB()
     {
@@ -61,10 +61,10 @@ public class CameraController : MonoBehaviour
 
         cam.orthographicSize += zoomModifier * zoomSpeed;
         cam.orthographicSize = Mathf.Clamp(cam.orthographicSize, 4, 10);
-	}
+    }
 
-	public void MoveCamera(Vector3 pos)
-	{
-		transform.position = new Vector3(pos.x, pos.y, -10f);
-	}
+    public void MoveCamera(Vector3 pos)
+    {
+        transform.position = new Vector3(pos.x, pos.y, -10f);
+    }
 }

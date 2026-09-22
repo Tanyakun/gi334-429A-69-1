@@ -9,20 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28e4447d3a396c04981e7a02415067c9, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c6e664f78db6cf4ea442f2a32ce0257, type: 3}
   m_Name: 07_Swamp
   m_EditorClassIdentifier: Assembly-CSharp::HexData
   hexName: Swamp
   type: 7
   terrainSprites:
-  - {fileID: 21300000, guid: b7e8909c64a7dba44b4c342e2fabf870, type: 3}
-  - {fileID: 21300000, guid: cf3cf7025b04dd9479106506f52097ad, type: 3}
-  - {fileID: 21300000, guid: 16f78c6b2aecc5340b10b9d28932a3da, type: 3}
-  - {fileID: 21300000, guid: 886ce5017147c994a9dd7d4b97d6feaf, type: 3}
+  - {fileID: 21300000, guid: 1daea85418ac6424aa4690b0b2120af4, type: 3}
+  - {fileID: 21300000, guid: 0711dacd601c9d54aa9bb076223388b8, type: 3}
+  - {fileID: 21300000, guid: 8f4f7c0cc5d11264db3e881ee9ec55bb, type: 3}
+  - {fileID: 21300000, guid: 2409c420c60032245835d01dcfd1d837, type: 3}
   forestSprites:
-  - {fileID: 21300000, guid: 5f8f83cd756522046961fca2b537980a, type: 3}
-  - {fileID: 21300000, guid: 0b6552f2c6c8b1445bd468e78ba39b2d, type: 3}
-  - {fileID: 21300000, guid: 84ddc27df7486c146a67b9da2b93de1f, type: 3}
-  - {fileID: 21300000, guid: 8fd04f553bf0a30468d4aed3dc3a5c6c, type: 3}
+  - {fileID: 21300000, guid: 494a1e112ab821740ad5508b752fb953, type: 3}
+  - {fileID: 21300000, guid: 8b4a8f0fde8face4b90d1592642aab06, type: 3}
+  - {fileID: 21300000, guid: fc8ac03c4cff83d46ae3218fb3399bd2, type: 3}
+  - {fileID: 21300000, guid: c48dac4606330dd45822c246c3421aef, type: 3}
   resourceYield: 
   moveCost: 2

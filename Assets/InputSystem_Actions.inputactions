@@ -90,7 +90,7 @@
                 {
                     "name": "Zoom",
                     "type": "Value",
-                    "id": "4ed4e528-cf47-4746-9492-f95c3fdc15fc",
+                    "id": "a4c1e77d-84af-46ee-820c-a90ade7d9f43",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -485,7 +485,7 @@
                 },
                 {
                     "name": "",
-                    "id": "14b1882f-6484-4b9d-9d2a-3f33a9c349d3",
+                    "id": "e35b0600-c17b-4fd0-84f6-a2e2806cff27",
                     "path": "<Mouse>/scroll",
                     "interactions": "",
                     "processors": "",

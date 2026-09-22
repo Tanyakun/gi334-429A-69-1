@@ -9,20 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28e4447d3a396c04981e7a02415067c9, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c6e664f78db6cf4ea442f2a32ce0257, type: 3}
   m_Name: 06_Desert
   m_EditorClassIdentifier: Assembly-CSharp::HexData
   hexName: Desert
   type: 6
   terrainSprites:
-  - {fileID: 21300000, guid: be091a6a8c75ddd48bbdb83f7a0e02dd, type: 3}
-  - {fileID: 21300000, guid: 70d1256f1d5388743be9ea04e4bb24e0, type: 3}
-  - {fileID: 21300000, guid: 6c57d611618501c4c91cda028afcb2ca, type: 3}
-  - {fileID: 21300000, guid: b6ecc7eb97567684ba226badfa9b18ce, type: 3}
+  - {fileID: 21300000, guid: a120f9ea35b3668468cb91e7d7d5924f, type: 3}
+  - {fileID: 21300000, guid: 68160d681d3b9e144a7605161361443a, type: 3}
+  - {fileID: 21300000, guid: a50aa4e0ae6d3ca4fae63110a3c4d315, type: 3}
+  - {fileID: 21300000, guid: 70c2c81d807653c47b5b5247be87ae1d, type: 3}
   forestSprites:
-  - {fileID: 21300000, guid: f2152c92cec1433489cbbf3f4e0e3922, type: 3}
-  - {fileID: 21300000, guid: 087fe6889031933418ea21607bebfe9c, type: 3}
-  - {fileID: 21300000, guid: 18eb8ad1d2904784fac02ff235fadefc, type: 3}
-  - {fileID: 21300000, guid: c218859ae4a77674eab2bd76b7ccfd74, type: 3}
+  - {fileID: 21300000, guid: e62b438e3455a3d41b61deb1f4d61f1a, type: 3}
+  - {fileID: 21300000, guid: 0c6f9fe02657eb448a0512912f3ba589, type: 3}
+  - {fileID: 21300000, guid: abee6e2c4b7eeaf4583701721567d799, type: 3}
+  - {fileID: 21300000, guid: 6e60e4986ead05846a1dce250c394ff3, type: 3}
   resourceYield: 
   moveCost: 1

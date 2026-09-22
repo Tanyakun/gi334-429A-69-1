@@ -13,59 +13,66 @@ public enum NavalUnitType
 
 public class NavalUnit : Unit
 {
-	[SerializeField]
-	private NavalUnitType navalUnitType;
-	public NavalUnitType NavalUnitType { get { return navalUnitType; } set { navalUnitType = value; } }
+    [SerializeField]
+    private NavalUnitType navalUnitType;
+    public NavalUnitType NavalUnitType { get { return navalUnitType; } set { navalUnitType = value; } }
 
-	[SerializeField]
-	private bool armed = false;
+    [SerializeField]
+    private bool armed = false;
 
-	[SerializeField]
-	private int cargoHoldNum;
+    [SerializeField]
+    private int cargoHoldNum;
+    public int CargoHoldNum { get { return cargoHoldNum; } }
 
-	[SerializeField]
-	private List<LandUnit> passengers = new List<LandUnit>();
-	public List<LandUnit> Passengers { get { return passengers; } set { passengers = value; } }
+    [SerializeField]
+    private List<LandUnit> passengers = new List<LandUnit>();
+    public List<LandUnit> Passengers { get { return passengers; } set { passengers = value; } }
 
-	[SerializeField]
-	private GameObject passengerParent;
-	public GameObject PassengerParent { get { return passengerParent; } }
+    [SerializeField]
+    private GameObject passengerParent;
+    public GameObject PassengerParent { get { return passengerParent; } }
 
-	public void UnitInit(GameManager gameMgr, Faction fact, NavalUnitData data)
-	{
-		base.gameMgr = gameMgr;
-		faction = fact;
-		flagSprite.sprite = fact.ShieldIcon;
+    public void UnitInit(GameManager gameMgr, Faction fact, NavalUnitData data)
+    {
+        base.gameMgr = gameMgr;
+        faction = fact;
+        flagSprite.sprite = fact.ShieldIcon;
 
-		unitName = data.unitName;
-		movePointMax = data.movePointMax;
-		movePoint = data.movePointMax;
-		strength = data.strength;
-		visualRange = data.visualRange;
-		unitSprite.sprite = data.shipIcon;
-		navalUnitType = data.navalUnitType;
-		armed = data.armed;
-		cargoHoldNum = data.cargoHoldNum;
-	}
+        unitName = data.unitName;
+        movePointMax = data.movePointMax;
+        movePoint = data.movePointMax;
+        strength = data.strength;
+        visualRange = data.visualRange;
+        unitSprite.sprite = data.shipIcon;
 
-	public override void PrepareMoveToHex(Hex targetHex) //Begin to move by RC or AI auto movement
-	{
-		base.PrepareMoveToHex(targetHex);
+        navalUnitType = data.navalUnitType;
+        armed = data.armed;
+        cargoHoldNum = data.cargoHoldNum;
+    }
 
-		if (targetHex.HexType != HexType.Ocean)
-		{
-			StayOnHex(curHex);
-		}
-	}
+    public override void PrepareMoveToHex(Hex targetHex) //Begin to move by RC or AI auto movement
+    {
+        base.PrepareMoveToHex(targetHex);
 
-	protected override void StayOnHex(Hex hex)
-	{
-		base.StayOnHex(hex);
+        if (targetHex.HexType != HexType.Ocean)
+        {
+            StayOnHex(curHex);
+        }
+    }
 
-		foreach (LandUnit unit in passengers)
-		{
-			unit.CurHex = hex;
-			unit.CurPos = hex.Pos;
-		}
-	}
+    protected override void StayOnHex(Hex hex)
+    {
+        base.StayOnHex(hex);
+
+        foreach (LandUnit passenger in passengers)
+        {
+            //Remove passenger from old ocean hex
+            passenger.CurHex.UnitsInHex.Remove(passenger);
+            //Add passenger to new ocean hex
+            hex.UnitsInHex.Add(passenger);
+
+            passenger.CurHex = hex;
+            passenger.CurPos = hex.Pos;
+        }
+    }
 }
