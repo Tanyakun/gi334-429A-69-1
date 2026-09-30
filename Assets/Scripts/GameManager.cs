@@ -191,8 +191,8 @@ public class GameManager : MonoBehaviour
 
     public void SelectPlayerFaction()
     {
-        int i = 3; //Netherland
-        playerFaction = factions[i];
+        int i = Settings.playerNationId;
+		playerFaction = factions[i];
     }
 
     private void GenerateEuropeanShip(Faction faction)
