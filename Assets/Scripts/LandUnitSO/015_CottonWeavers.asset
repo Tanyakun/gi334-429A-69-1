@@ -17,7 +17,7 @@ MonoBehaviour:
   strength: 1
   movePointMax: 3
   visualRange: 1
-  unitIcon: {fileID: 21300000, guid: 72f4ec696e6e8424ea0b5437995f6153, type: 3}
+  unitIcon: {fileID: 21300000, guid: 0c8c1601162a9524ba1ab5a79c68ba71, type: 3}
   armed: 0
   hasMusket: 0
   hasHorse: 0
