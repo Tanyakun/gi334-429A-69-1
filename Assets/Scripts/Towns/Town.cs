@@ -1,6 +1,7 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Town : MonoBehaviour
+public class Town : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField]
     protected Faction faction;
@@ -69,4 +70,39 @@ public class Town : MonoBehaviour
         flagSprite.sprite = fact.FlagIcon;
         townSprite.sprite = fact.TownIcon;
     }
+
+	public void AccumulateToWarehouse()
+	{
+		for (int i = 0; i < 16; i++)
+		{
+			warehouse[i] += totalYieldThisTurn[i];
+		}
+	}
+
+	public void OnPointerClick(PointerEventData eventData)
+	{
+		//Debug.Log("Mouse Click");
+		if (eventData.button == PointerEventData.InputButton.Left)
+		{
+			if (faction == gameManager.PlayerFaction)
+				gameManager.SetupCurrentTown(this);
+		}
+
+		if (eventData.button == PointerEventData.InputButton.Right)
+		{
+			//Debug.Log($"To Move Hex:{curHex.X}, {curHex.Y}");
+			if (gameManager.CheckIfHexIsAdjacent(gameManager.CurUnit.CurHex, curHex))
+			{
+				if (faction == gameManager.PlayerFaction)//same side unit
+				{
+					//Debug.Log("True");
+					gameManager.CurUnit.PrepareMoveToHex(curHex);
+				}
+				else//diff side unit
+				{
+					//Debug.Log($"{gameMgr.CurUnit} Attacks {townName}");
+				}
+			}
+		}
+	}
 }

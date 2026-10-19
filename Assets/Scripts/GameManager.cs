@@ -268,12 +268,17 @@ public class GameManager : MonoBehaviour
                 curUnit.gameObject.SetActive(false);
         }
 
-        unit.gameObject.SetActive(true);
-        unit.SetUnitToFrontLayerOrder();
+        if (unit.UnitStatus != UnitStatus.WorkInField)
+        {
+            unit.gameObject.SetActive(true);
+            unit.SetUnitToFrontLayerOrder();
+        }
 
         curUnit = unit;
+        CameraController.instance.MoveCamera(curUnit.transform.position);
         //UpdateCanGoHex();
 
+        HideOtherLandUnits(curUnit);
         FocusPlayerUnit(curUnit);
         //Debug.Log(curUnit);
     }
@@ -421,7 +426,6 @@ public class GameManager : MonoBehaviour
             i = 0;
 
         SelectPlayerUnit(playerFaction.Units[i]);
-        CameraController.instance.MoveCamera(curUnit.transform.position);
     }
 
     public void GenerateTown(Faction faction, Hex curHex)
@@ -548,6 +552,8 @@ public class GameManager : MonoBehaviour
         if (curUnit != null)
             curUnit.ToggleBorder(false, Color.green);
 
+        UIManager.instance.CheckActiveUIPanel();
+
         Debug.Log("End Turn");
         playerTurn = false;
         AIManager.instance.StartAITurn();
@@ -575,4 +581,34 @@ public class GameManager : MonoBehaviour
         UIManager.instance.ToggleTownPanel(true);
         UIManager.instance.SetupCurrentTown(curTown.CurHex, aroundHexes);
     }
+
+	public void AccumulateStockAllTowns()
+	{
+		for (int i = 0; i < factions.Length; i++)
+		{
+			for (int j = 0; j < factions[i].Towns.Count; j++)
+			{
+				factions[i].Towns[j].AccumulateToWarehouse();
+			}
+		}
+	}
+
+	public void StartNewTurn()
+	{
+		playerTurn = true;
+		SelectPlayerFirstUnit();
+		AccumulateStockAllTowns();
+	}
+
+	public void HideOtherLandUnits(Unit thisUnit)
+	{
+		foreach (Unit other in thisUnit.CurHex.UnitsInHex)
+		{
+			if (other.UnitType == UnitType.Land && other.Faction == playerFaction)
+			{
+				if (other != thisUnit)
+					other.gameObject.SetActive(false);
+			}
+		}
+	}
 }
