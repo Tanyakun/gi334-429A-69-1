@@ -10,6 +10,10 @@ public class CargoSlot : MonoBehaviour, IDropHandler
 	private int holdId;
 
 	[SerializeField]
+	private CargoDrag cargoDrag;
+	public CargoDrag CargoDrag { get { return cargoDrag; } set { cargoDrag = value; } }
+
+	[SerializeField]
 	private UIManager uiMgr;
 
 	void Awake()
@@ -55,5 +59,7 @@ public class CargoSlot : MonoBehaviour, IDropHandler
 
 		int cargoLeft = ship.AddCargo(holdId, stockDrag.Cargo);
 		stockDrag.Cargo.Quantity = cargoLeft;
+
+		uiMgr.UpdateCargoSlots(ship);
 	}
 }

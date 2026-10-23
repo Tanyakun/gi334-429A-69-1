@@ -104,7 +104,11 @@ public class GameManager : MonoBehaviour
     public const int TROPICALNORTH = HEIGHT - 30; //30
     public const int TROPICALSOUTH = 30;
 
-    public static GameManager instance;
+	[SerializeField]
+	private int year = 1600;
+	public int Year { get { return year; } set { year = value; } }
+
+	public static GameManager instance;
 
     void Awake()
     {
@@ -136,7 +140,10 @@ public class GameManager : MonoBehaviour
 
         if (Keyboard.current.backspaceKey.wasPressedThisFrame)
             Endturn();
-    }
+
+        if (Keyboard.current.eKey.wasPressedThisFrame)
+            EuropePanel();
+	}
 
     private void GenerateAllHexes()
     {
@@ -268,7 +275,7 @@ public class GameManager : MonoBehaviour
                 curUnit.gameObject.SetActive(false);
         }
 
-        if (unit.UnitStatus != UnitStatus.WorkInField)
+        if (unit.UnitType == UnitType.Land && unit.UnitStatus != UnitStatus.WorkInField)
         {
             unit.gameObject.SetActive(true);
             unit.SetUnitToFrontLayerOrder();
@@ -553,8 +560,9 @@ public class GameManager : MonoBehaviour
             curUnit.ToggleBorder(false, Color.green);
 
         UIManager.instance.CheckActiveUIPanel();
+        EuropeManager.instance.UpdateShipInTransitTurn();
 
-        Debug.Log("End Turn");
+		Debug.Log("End Turn");
         playerTurn = false;
         AIManager.instance.StartAITurn();
     }
@@ -602,12 +610,39 @@ public class GameManager : MonoBehaviour
 
 	public void HideOtherLandUnits(Unit thisUnit)
 	{
+        if (thisUnit.CurHex == null)
+            return;
+
 		foreach (Unit other in thisUnit.CurHex.UnitsInHex)
 		{
 			if (other.UnitType == UnitType.Land && other.Faction == playerFaction)
 			{
 				if (other != thisUnit)
 					other.gameObject.SetActive(false);
+			}
+		}
+	}
+
+	public void EuropePanel()
+	{
+		UIManager.instance.CheckEuropePanel();
+	}
+
+	public void CheckShipToEurope()
+	{
+		//Debug.Log("Checking Ship");
+		foreach (Unit unit in playerFaction.Units)
+		{
+			if (unit.UnitType == UnitType.Naval && unit.CurHex != null)
+			{
+				if (unit.CurHex.X == WIDTH - 1)
+				{
+					NavalUnit ship = (NavalUnit)unit;
+					CameraController.instance.MoveCamera(unit.CurPos);
+
+					//Debug.Log("Go to Europe?");
+					EuropeManager.instance.QuestionGoToEurope(ship);
+				}
 			}
 		}
 	}

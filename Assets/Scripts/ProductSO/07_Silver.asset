@@ -16,3 +16,5 @@ MonoBehaviour:
   productName: Silver
   icons:
   - {fileID: 21300000, guid: 31419aa2c464c48439955f5a9fdb8cf2, type: 3}
+  startBid: 6
+  startAsk: 8

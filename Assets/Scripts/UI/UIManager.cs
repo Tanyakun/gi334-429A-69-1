@@ -76,6 +76,54 @@ public class UIManager : MonoBehaviour
 	[SerializeField]
 	private CargoSlot[] cargoSlots; //ship's cargo hold
 
+	[SerializeField]
+	private GameObject cargoDragPrefab; //icon dragged from ship's cargo
+	public GameObject CargoDragPrefab { get { return cargoDragPrefab; } }
+
+	[SerializeField]
+	private TMP_Text moneyText;
+
+	[SerializeField]
+	private TMP_Text moneyEuropeText;
+
+	[Header("Europe")]
+	[SerializeField]
+	private GameObject europePanel;
+
+	[SerializeField]
+	private GameObject toEuropeShipsParent;
+
+	[SerializeField]
+	private GameObject fromEuropeShipsParent;
+
+	[SerializeField]
+	private List<GameObject> allShipToEuropeIcons;
+
+	[SerializeField]
+	private List<GameObject> allShipFromEuropeIcons;
+
+	[SerializeField]
+	private List<GameObject> allShipInEuropeIcons;
+	public List<GameObject> AllShipInEuropeIcons { get { return allShipInEuropeIcons; } }
+
+	[SerializeField]
+	private GameObject europePortShipsParent;
+
+	[SerializeField]
+	private CargoSlot[] cargoSlotsEurope; //ship's cargo hold (Europe)
+	public CargoSlot[] CargoSlotsEurope { get { return cargoSlotsEurope; } }
+
+	[SerializeField]
+	private StockSlot[] stockSlotsEurope; //Europe's port slot
+
+	[SerializeField]
+	private bool inEurope;
+	public bool InEurope { get { return inEurope; } }
+
+	[SerializeField]
+	private GameObject shipDragPrefab; //ship icon drag
+	public GameObject ShipDragPrefab { get { return shipDragPrefab; } }
+
 	public static UIManager instance;
 
     private void Awake()
@@ -174,7 +222,8 @@ public class UIManager : MonoBehaviour
 			HideUnitWorkInTown(GameManager.instance.CurTown.CurHex);
 			DestroyAllShipIcons();
 			DisableAllCargoSlots(cargoSlots);
-        }
+			DeleteAllCargoDragsInSlots();
+		}
         townPanel.SetActive(show);
     }
 
@@ -315,6 +364,9 @@ public class UIManager : MonoBehaviour
 	{
 		if (townPanel.activeInHierarchy)
 			ToggleTownPanel(false);
+
+		if (europePanel.activeInHierarchy)
+			ToggleEuropePanel(false);
 	}
 
 	public void SetupStockSlots(Hex hex)
@@ -383,6 +435,117 @@ public class UIManager : MonoBehaviour
 		foreach (CargoSlot slot in cargoSlots)
 		{
 			slot.gameObject.SetActive(false);
+		}
+	}
+
+	public void ToggleStockDragRaycast(bool flag)
+	{
+		foreach (StockSlot slot in stockSlots)
+		{
+			slot.ToggleRayCastStockDrag(flag);
+		}
+	}
+
+	private void DeleteAllCargoDragsInSlots()
+	{
+		foreach (CargoSlot slot in cargoSlots)
+		{
+			if (slot.CargoDrag != null)
+			{
+				Destroy(slot.CargoDrag.gameObject);
+				slot.CargoDrag = null;
+			}
+		}
+	}
+
+	public void UpdateCargoSlots(NavalUnit ship) //Update icon in ship's hold
+	{
+		DeleteAllCargoDragsInSlots();
+
+		for (int i = 0; i < ship.CargoList.Count; i++)
+		{
+			GameObject cargoDragObj =
+				Instantiate(cargoDragPrefab, cargoSlots[i].transform.position, Quaternion.identity, cargoSlots[i].transform);
+
+			CargoDrag cargoDrag = cargoDragObj.GetComponent<CargoDrag>();
+			cargoSlots[i].CargoDrag = cargoDrag;
+
+			int productId = ship.CargoList[i].ProductID;
+			Sprite icon = GameManager.instance.ProductData[productId].icons[0];
+
+			cargoDrag.CargoDragInit(ship, icon, i);
+		}
+	}
+
+	public void ToggleEuropePanel(bool flag)
+	{
+		if (flag == false)
+		{
+			DestroyAllShipsEuropeIcons();
+
+			europePanel.SetActive(false);
+			inEurope = false;
+		}
+		else
+		{
+			townPanel.SetActive(false);
+			europePanel.SetActive(true);
+			inEurope = true;
+
+			SetupShipsToEurope(EuropeManager.instance.ShipsToEurope);
+			SetupShipsInEurope(EuropeManager.instance.ShipsInEurope);
+		}
+	}
+
+	public void CheckEuropePanel()
+	{
+		if (europePanel.activeInHierarchy)
+			ToggleEuropePanel(false);
+		else
+			ToggleEuropePanel(true);
+	}
+
+	private void SetupShipsToEurope(List<ShipInTransit> shipsToEU)
+	{
+		foreach (ShipInTransit shipInTransit in shipsToEU)
+		{
+			GameObject unitObj = Instantiate(shipInPortPrefab, toEuropeShipsParent.transform);
+			allShipToEuropeIcons.Add(unitObj);
+
+			ShipInPort shipIcon = unitObj.GetComponent<ShipInPort>();
+			shipIcon.UnitInit(shipInTransit.Ship);
+			shipIcon.UpdateTurnText(shipInTransit.TurnLeft);
+		}
+	}
+
+	public void DestroyShipIcons(List<GameObject> shipList)
+	{
+		foreach (GameObject obj in shipList)
+		{
+			Destroy(obj);
+		}
+		shipList.Clear();
+	}
+
+	private void DestroyAllShipsEuropeIcons()
+	{
+		DestroyShipIcons(allShipToEuropeIcons);
+		DestroyShipIcons(allShipFromEuropeIcons);
+		DestroyShipIcons(allShipInEuropeIcons);
+	}
+
+	public void SetupShipsInEurope(List<NavalUnit> ships)
+	{
+		foreach (Unit unit in ships)
+		{
+			if (unit.UnitType == UnitType.Naval)
+			{
+				GameObject unitObj = Instantiate(shipInPortPrefab, europePortShipsParent.transform);
+				allShipInEuropeIcons.Add(unitObj);
+
+				ShipInPort shipIcon = unitObj.GetComponent<ShipInPort>();
+				shipIcon.UnitInit((NavalUnit)unit);
+			}
 		}
 	}
 }

@@ -1,8 +1,9 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class StockSlot : MonoBehaviour
+public class StockSlot : MonoBehaviour, IDropHandler
 {
 	[SerializeField]
 	private Town town;
@@ -91,5 +92,27 @@ public class StockSlot : MonoBehaviour
 	{
 		if (stockDrag != null)
 			stockDrag.Image.raycastTarget = flag;
+	}
+
+	public void OnDrop(PointerEventData eventData)
+	{
+		GameObject obj = eventData.pointerDrag;
+		CargoDrag cargoDrag = obj.GetComponent<CargoDrag>();
+
+		if (cargoDrag == null)
+			return;
+
+		if (cargoDrag.Cargo.ProductID != productId)
+			return;
+
+		UpdateQuantityStock(cargoDrag.Cargo.Quantity);
+
+		cargoDrag.RemoveCargoListFromShip();
+		uiMgr.UpdateCargoSlots(cargoDrag.Ship);
+
+		Debug.Log("CargoDrag - On Drop - on StockSlot");
+		uiMgr.ToggleStockDragRaycast(true);
+
+		Destroy(obj);
 	}
 }
