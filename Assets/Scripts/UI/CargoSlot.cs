@@ -14,11 +14,19 @@ public class CargoSlot : MonoBehaviour, IDropHandler
 	public CargoDrag CargoDrag { get { return cargoDrag; } set { cargoDrag = value; } }
 
 	[SerializeField]
+	private GameManager gameMgr;
+
+	[SerializeField]
+	private EuropeManager EUMgr;
+
+	[SerializeField]
 	private UIManager uiMgr;
 
 	void Awake()
 	{
 		uiMgr = UIManager.instance;
+		gameMgr = GameManager.instance;
+		EUMgr = EuropeManager.instance;
 	}
 
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -54,12 +62,20 @@ public class CargoSlot : MonoBehaviour, IDropHandler
 		if (stockDrag == null)
 			return;
 
-		/*cargoDrag.IconParent = transform;
-		cargoObj.transform.position = transform.position;*/
-
 		int cargoLeft = ship.AddCargo(holdId, stockDrag.Cargo);
-		stockDrag.Cargo.Quantity = cargoLeft;
 
-		uiMgr.UpdateCargoSlots(ship);
+		if (uiMgr.InEurope)
+		{
+			uiMgr.UpdateCargoSlots(ship, uiMgr.CargoSlotsEurope);
+			//Buy from market
+			gameMgr.PlayerFaction.Money -=
+				stockDrag.Cargo.Quantity * EUMgr.EuropeStocks[stockDrag.Cargo.ProductID].AskPrice;
+
+			uiMgr.UpdateMoneyEuropeText();
+		}
+		else
+			uiMgr.UpdateCargoSlots(ship, uiMgr.CargoSlots);
+
+		stockDrag.Cargo.Quantity = cargoLeft;
 	}
 }

@@ -64,8 +64,12 @@ public class Faction : MonoBehaviour
     private bool isTropicalNatives;
     public bool IsTropicalNatives { get { return isTropicalNatives; } }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+	[SerializeField]
+	private int money = 1000;
+	public int Money { get { return money; } set { money = value; } }
+
+	// Start is called once before the first execution of Update after the MonoBehaviour is created
+	void Start()
     {
         
     }

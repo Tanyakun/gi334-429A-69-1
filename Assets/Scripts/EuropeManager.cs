@@ -103,7 +103,7 @@ public class EuropeManager : MonoBehaviour
 
 		//--------------
 
-		/*//From Europe
+		//From Europe
 		List<ShipInTransit> shipsReachNewWorld = new List<ShipInTransit>();
 
 		foreach (ShipInTransit shipInTransit in shipsFromEurope)
@@ -129,11 +129,23 @@ public class EuropeManager : MonoBehaviour
 			if (shipsFromEurope.Contains(shipReachNW))
 				shipsFromEurope.Remove(shipReachNW);
 		}
-		shipsReachEurope.Clear();*/
+		shipsReachEurope.Clear();
 	}
 
 	public void UpdateEuropePrice(int i, int increment)
 	{
 		europeStocks[i].UpdatePrice(increment);
+	}
+
+	public void AllowToGoToNewWorld(NavalUnit ship)
+	{
+		ShipInTransit shipInTransit = new ShipInTransit(ship, EUROPE_DISTANCE);
+
+		if (!shipsFromEurope.Contains(shipInTransit))
+			shipsFromEurope.Add(shipInTransit);
+
+		shipsInEurope.Remove(ship);
+
+		UIManager.instance.UpdateIconsFromEuropeToNewWorld();
 	}
 }

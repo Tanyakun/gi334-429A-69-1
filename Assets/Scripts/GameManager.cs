@@ -202,10 +202,10 @@ public class GameManager : MonoBehaviour
 		playerFaction = factions[i];
     }
 
-    private void GenerateEuropeanShip(Faction faction)
+    private void GenerateEuropeanShip(Faction faction, int yPos)
     {
-        int x = WIDTH - 1; //near right edge of a map
-        int y = Random.Range(0, HEIGHT);
+        int x = WIDTH - 2; //near right edge of a map
+        int y = yPos;
         Hex hex = allHexes[x, y];
 
         GameObject obj = Instantiate(navalUnitPrefab, hex.Pos, Quaternion.identity, faction.UnitParent);
@@ -226,11 +226,26 @@ public class GameManager : MonoBehaviour
 
     private void GenerateAllEuropeanShips()
     {
-        for (int i = 0; i < 5; i++)
-        {
-            GenerateEuropeanShip(factions[i]);
-        }
-    }
+		int interval = HEIGHT / 5;
+		int n = HEIGHT;
+
+		List<int> spots = new List<int>();
+
+		for (int i = 0; i < 5; i++)
+		{
+			n -= Random.Range(5, interval);
+			spots.Add(n);
+		}
+
+		for (int i = 0; i < 5; i++)
+		{
+			int index = Random.Range(0, spots.Count);
+			int yPosition = spots[index];
+			spots.RemoveAt(index);
+
+			GenerateEuropeanShip(factions[i], yPosition);
+		}
+	}
 
     public void ShowToggleBorder(Unit unit)
     {
@@ -644,6 +659,40 @@ public class GameManager : MonoBehaviour
 					EuropeManager.instance.QuestionGoToEurope(ship);
 				}
 			}
+		}
+	}
+
+	private void MoveEuropeanShip(NavalUnit ship)
+	{
+		int x = WIDTH - 2; //near right edge of a map
+		int y = Random.Range(0, HEIGHT);
+		Hex hex = allHexes[x, y];
+
+		Debug.Log($"Position: {hex.Pos}");
+
+		ship.SetupPosition(hex);
+		ship.gameObject.SetActive(true);
+		ship.gameObject.transform.position = ship.CurPos;
+
+		ClearDarkFogAroundUnit(ship);
+		SelectPlayerUnit(ship);
+		CameraController.instance.MoveCamera(ship.CurPos);
+		ship.Visible = true;
+	}
+
+	public void CheckToGenerateShipFromEurope(NavalUnit ship)
+	{
+		int y = Random.Range(0, HEIGHT);
+
+		if (!playerFaction.Units.Contains(ship))
+		{
+			Debug.Log("New Ship");
+			GenerateEuropeanShip(playerFaction, y);
+		}
+		else
+		{
+			Debug.Log("Old Ship");
+			MoveEuropeanShip(ship);
 		}
 	}
 }

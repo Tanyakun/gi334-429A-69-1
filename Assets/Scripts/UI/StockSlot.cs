@@ -28,11 +28,19 @@ public class StockSlot : MonoBehaviour, IDropHandler
 	private StockDrag stockDrag;
 
 	[SerializeField]
+	private GameManager gameMgr;
+
+	[SerializeField]
+	private EuropeManager EUMgr;
+
+	[SerializeField]
 	private UIManager uiMgr;
 
 	void Awake()
 	{
 		uiMgr = UIManager.instance;
+		gameMgr = GameManager.instance;
+		EUMgr = EuropeManager.instance;
 	}
 
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -47,15 +55,21 @@ public class StockSlot : MonoBehaviour, IDropHandler
         
     }
 
-	public void stockInit(int i, Town t, Sprite s)
+	public void stockInit(int i, Town t, bool Europe)
 	{
 		//Debug.Log($"stock Init:{i}");
 
 		town = t;
 		productId = i;
 		quantity = town.Warehouse[productId];
-		stockText.text = quantity.ToString();
-		image.sprite = s;
+
+		image.sprite = gameMgr.ProductData[i].icons[0];
+
+		if (Europe)
+			stockText.text =
+				$"{EUMgr.EuropeStocks[i].BidPrice}/{EUMgr.EuropeStocks[i].BidPrice}";
+		else
+		    stockText.text = quantity.ToString();
 
 		if (stockDrag == null)
 		{
@@ -70,9 +84,20 @@ public class StockSlot : MonoBehaviour, IDropHandler
 
 	public void UpdateQuantityStock(int n)
 	{
-		town.Warehouse[productId] += n;
-		quantity = town.Warehouse[productId];
-		stockText.text = quantity.ToString();
+		if (uiMgr.InEurope)
+		{
+			EUMgr.EuropeStocks[productId].Quantity += n;
+			quantity = EUMgr.EuropeStocks[productId].Quantity;
+
+			stockText.text =
+				$"{EUMgr.EuropeStocks[productId].BidPrice}/{EUMgr.EuropeStocks[productId].AskPrice}";
+		}
+		else
+		{
+			town.Warehouse[productId] += n;
+			quantity = town.Warehouse[productId];
+			stockText.text = quantity.ToString();
+		}
 	}
 
 	public StockDrag GenerateStockDrag(int id, StockSlot slot)
@@ -106,13 +131,41 @@ public class StockSlot : MonoBehaviour, IDropHandler
 			return;
 
 		UpdateQuantityStock(cargoDrag.Cargo.Quantity);
-
 		cargoDrag.RemoveCargoListFromShip();
-		uiMgr.UpdateCargoSlots(cargoDrag.Ship);
 
-		Debug.Log("CargoDrag - On Drop - on StockSlot");
+		if (uiMgr.InEurope)
+		{
+			uiMgr.UpdateCargoSlots(cargoDrag.Ship, uiMgr.CargoSlotsEurope);
+			//Sell to market
+			gameMgr.PlayerFaction.Money +=
+				cargoDrag.Cargo.Quantity * EUMgr.EuropeStocks[productId].BidPrice;
+
+			uiMgr.UpdateMoneyEuropeText();
+		}
+		else
+		{
+			uiMgr.UpdateCargoSlots(cargoDrag.Ship, uiMgr.CargoSlots);
+		}
+
+		//Debug.Log("CargoDrag - On Drop - on StockSlot");
 		uiMgr.ToggleStockDragRaycast(true);
 
 		Destroy(obj);
+	}
+
+	public void StockInitEurope(int i)
+	{
+		//Debug.Log($"stock Init Europe:{i}");
+
+		productId = i;
+		image.sprite = gameMgr.ProductData[i].icons[0];
+
+		quantity = EUMgr.EuropeStocks[productId].Quantity;
+		stockText.text = $"{EUMgr.EuropeStocks[productId].BidPrice}/{EUMgr.EuropeStocks[productId].AskPrice}";
+
+		if (stockDrag == null)
+		{
+			stockDrag = GenerateStockDrag(productId, this);
+		}
 	}
 }

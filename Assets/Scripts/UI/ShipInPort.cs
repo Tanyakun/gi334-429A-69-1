@@ -17,6 +17,9 @@ public class ShipInPort : MonoBehaviour, IPointerClickHandler
 	public TMP_Text TurnText { get { return turnText; } set { turnText = value; } }
 
 	[SerializeField]
+	private ShipDrag shipDrag;
+
+	[SerializeField]
 	private UIManager uiMgr;
 
 	void Awake()
@@ -41,10 +44,15 @@ public class ShipInPort : MonoBehaviour, IPointerClickHandler
 		Debug.Log("Click at ship");
 	}
 
-	public void UnitInit(NavalUnit navalUnit)
+	public void UnitInit(NavalUnit navalUnit, bool genShipDrag)
 	{
 		unitImage.sprite = navalUnit.UnitSprite.sprite;
 		this.navalUnit = navalUnit;
+
+		if (genShipDrag)
+		{
+			shipDrag = GenerateShipDrag(navalUnit);
+		}
 	}
 
 	public void UpdateTurnText(int turn)
@@ -52,5 +60,16 @@ public class ShipInPort : MonoBehaviour, IPointerClickHandler
 		turnText.gameObject.SetActive(true);
 		turnText.text = ($"{turn}\nTurn(s)");
 		turnText.color = Color.yellow;
+	}
+
+	public ShipDrag GenerateShipDrag(NavalUnit ship)
+	{
+		GameObject shipDragObj =
+			Instantiate(uiMgr.ShipDragPrefab, transform.position, Quaternion.identity, transform);
+
+		ShipDrag shipDrag = shipDragObj.GetComponent<ShipDrag>();
+		shipDrag.Init(ship);
+
+		return shipDrag;
 	}
 }
